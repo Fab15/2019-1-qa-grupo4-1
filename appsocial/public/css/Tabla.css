@@ -1,0 +1,40 @@
+
+table {
+    border-collapse: collapse;
+    border-spacing: 1;
+    width: 75%;
+    border: 1px solid #ddd;
+	font-size: 1vw;
+}
+
+td {
+	font-size: 1vw;
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+td.btn {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+th{
+	 letter-spacing: 0.2vw;
+	 font-family: 'Montserrat';
+	 text-align: center;
+	 text-transform: uppercase;
+	 padding: 8px;
+	 border: 1px solid #ddd;
+	 background-color: var(--azul);
+	 color:white;
+
+}
+th.two{
+	 text-align: center;
+	 padding: 8px;
+	 border: 1px solid #ddd;
+	 background-color: red;
+	 color:white;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}

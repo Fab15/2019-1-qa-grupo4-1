@@ -1,0 +1,32 @@
+.boton{
+    border: none;
+    color: white;
+    padding: 15px 60px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.8em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    cursor: pointer;
+}
+.botonAzul {
+    background-color: var(--azul); 
+    margin: 4px 2px;
+    
+}
+.botonAzul:hover {background-color: var(--azulHover);  }
+
+.botonAmarillo {
+    background-color: var(--amarillo); 
+}
+
+.botonAmarilloTres {
+    margin-top:3%;
+}
+.botonAmarilloUno {
+    margin-top:0.5%;
+}
+.botonAmarilloDos {
+    margin-top:2%;
+}
+.botonAmarillo:hover {background-color: var(--amarilloHover);  }
