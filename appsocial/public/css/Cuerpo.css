@@ -2,13 +2,11 @@
 @import url(http://fonts.googleapis.com/css?family=Montserrat);
 @import url(http://fonts.googleapis.com/css?family=Muli);
 :root {
-  --rojo: #ff5850; 
-  --amarillo: #f3c02f;
-  --amarilloHover:#F9CE64; 
-  --azul: #414a6b;   
-  --azulHover:#515c7c;
-  --blanco:#ededed;
-  --negro:#000000;
+  --rojo: #cb3737; 
+  --naranja: #ee6f57;
+  --rojoHover:#dd4e4e; 
+  --gris: #e3e3e3;   
+  --blanco:#fafafa;
 }
 html {
   height: 100%;
@@ -21,7 +19,7 @@ html {
   box-sizing: inherit;
 }
 body {
-	background: var(--blanco);
+	background: var(--gris);
 	font-family: 'Montserrat', Arial, sans-serif;
   font-size: 0.93vw;
   position: relative;
@@ -31,12 +29,13 @@ body {
 }
 hr{
   width: 75%;
-  border-color:var(--azulHover);
+  border-color:var(--rojoHover);
 }
-p{
-   font-size: 0.93vw;
-   text-align: right;
-   margin: 1.5% 2.5% 0% -15%;
+a{
+  color:var(--naranja);
+  text-decoration: none;
+  font-size: 0.93vw;
+  text-align: center;
 }
 .labelTabla{
    font-size: 1.3vw;
@@ -57,6 +56,14 @@ h3{
    margin-top: 2%;
    margin-left: 11%;
 }
+/*Modal*/
+h4{ 
+   font-size: 1.3vw;
+   color:var(--black);
+   font-weight: 80;
+   text-align: center;
+   margin-top: 2%;
+}
 .h1{
    font-size: 1.3vw;
    color:var(--black);
@@ -74,14 +81,14 @@ h3{
 }
 
 .imgFooter{
-  margin-left:58%;
+  margin-left:70%;
   width: 3%;
   height: 3%;
 }
 
 .footer {
-   background-color: var(--azul);
-   color: white;
+  background-color: var(--rojo);
+  color: white;
   position: absolute;
   right: 0;
   bottom: 0;
@@ -138,7 +145,7 @@ h3{
   line-height: 1;
 }
 #cssmenu > ul {
-  background: var(--azul);
+  background: var(--rojo);
 }
 #cssmenu > ul > li {
   float: left;
@@ -164,7 +171,7 @@ h3{
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
-  background: var(--azul);
+  background: var(--rojo);
   -webkit-transition: all .3s;
   -moz-transition: all .3s;
   -o-transition: all .3s;

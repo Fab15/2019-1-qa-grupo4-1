@@ -11,6 +11,7 @@
 	background: #fff;
 	
 }
+
 .radioButton{
 	height: 2em;
 	position: relative;
@@ -86,8 +87,8 @@
 	-ms-user-select: none;
 	user-select: none;
 }
-.inputLabelAzul{
-	background: var(--azul); 	
+.inputLabelNaranja{
+	background: var(--naranja); 	
 }
 .inputLabelAmarillo{
 	background: var(--amarillo); 	
@@ -105,7 +106,7 @@
 
 .inputLabel::before {
 	content: '';
-	background: var(--azul); osition: absolute;
+	background: var(--naranja); osition: absolute;
 	top: 0;
 	left: 0;
 	z-index: -1;

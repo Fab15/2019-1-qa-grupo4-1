@@ -15,4 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('student', 'StudentController');
+Route::resource('usuario', 'usuarioControlador');
+
+Route::get('logIn.blade.php', function () {
+    return view('usuario.logIn');
+});
+
+Route::get('inicio.blade.php', function () {
+    return view('usuario.inicio');
+});
+Route::get('ingresoUsuario.blade.php', function () {
+    return view('usuario.ingresoUsuario');
+});
 

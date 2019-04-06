@@ -9,12 +9,12 @@
     font-family: 'Montserrat', Arial, sans-serif;
     cursor: pointer;
 }
-.botonAzul {
-    background-color: var(--azul); 
+.botonRojo {
+    background-color: var(--rojo); 
     margin: 4px 2px;
     
 }
-.botonAzul:hover {background-color: var(--azulHover);  }
+.botonRojo:hover {background-color: var(--rojoHover);  }
 
 .botonAmarillo {
     background-color: var(--amarillo); 
