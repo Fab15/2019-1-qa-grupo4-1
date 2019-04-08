@@ -17,6 +17,15 @@ Route::get('/', function () {
 
 Route::resource('student', 'StudentController');
 Route::resource('usuario', 'usuarioControlador');
+Route::resource('publicacion', 'publicacionControlador');
+Route::resource('comentario', 'comentarioControlador');
+
+Route::get('usuario', 'usuarioControlador@store');
+Route::post('usuario', 'usuarioControlador@login');
+
+Route::post('publicacion', 'publicacionControlador@cargarPublicaciones');
+
+
 
 Route::get('logIn.blade.php', function () {
     return view('usuario.logIn');
@@ -28,4 +37,6 @@ Route::get('inicio.blade.php', function () {
 Route::get('ingresoUsuario.blade.php', function () {
     return view('usuario.ingresoUsuario');
 });
+
+
 

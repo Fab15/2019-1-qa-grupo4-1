@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\usuario;
-
+use DB;
 class usuarioControlador extends Controller
 {
     /**
@@ -17,7 +15,6 @@ class usuarioControlador extends Controller
         $usuarios = usuario::all()->toArray();
         return view('usuario.inicio');
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -27,7 +24,6 @@ class usuarioControlador extends Controller
     {
         return view('usuario.ingresoUsuario');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -49,12 +45,10 @@ class usuarioControlador extends Controller
             'password'=>$request->get('password'),
             'nombre'=>$request->get('nombre'),
             'fechaNacimiento'=>$request->get('fechaNacimiento'),
-
         ]);
         $usuario->save();
-        return redirect()->route('usuario.index')->with('success', 'Informacion agregada');
+        return redirect()->route('usuario.inicio')->with('success', 'Informacion agregada');
     }
-
     /**
      * Display the specified resource.
      *
@@ -65,7 +59,6 @@ class usuarioControlador extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -76,7 +69,6 @@ class usuarioControlador extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -87,6 +79,33 @@ class usuarioControlador extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    
+    public function login(Request $request)
+    {
+        $this->validate($request, [
+            'correo'    =>  'required',
+            'password'     =>  'required'
+        ]);
+
+        $usuario = new usuario([
+            'correo'=>$request->get('correo'),
+            'password'=>$request->get('password'),
+        ]);
+
+        $comprobacion = DB::select('call procedimientoLogin(?,?)', [$usuario->correo,$usuario->password]);
+        if(count($comprobacion) > 0)
+        {
+            session_start();
+            $_SESSION["id"] = $comprobacion[0]->id;
+            $_SESSION["nombre"] = $comprobacion[0]->nombre;
+            return redirect('inicio.blade.php');
+        }
+        else
+        {
+            return redirect('logIn.blade.php');
+        }
     }
 
     /**
