@@ -1,7 +1,8 @@
 
-<!DOCTYPE html>
-<html lang="es-ES">
-	<head>
+ <!DOCTYPE html>  
+ <html>  
+ <head>
+
 		<meta charset="UTF-8" />
 		<link rel="icon" href="img/Logo-Icono.ico" type="image/ico" sizes="16x16">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,56 +25,9 @@
 		<script type="text/javascript" src="js/MainMenu/scriptMenu.js"></script>
 		<script type="text/javascript" src="js/snap.svg-min.js"></script>
 		<script type="text/javascript" src="js/componentesAdultosMayores.js"></script>
-		<script>  
-			$(document).ready(function(){  
-						$('#insert').click(function(){  
-								var image_name = $('#image').val();  
-								if(image_name == '')  
-								{  
-											alert("Please Select Image");  
-											return false;  
-								}  
-								else  
-								{  
-											var extension = $('#image').val().split('.').pop().toLowerCase();  
-											if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1)  
-											{  
-													alert('Invalid Image File');  
-													$('#image').val('');  
-													return false;  
-											}  
-								}  
-						});  
-			});  
- </script>
-		
-	</head>
-	<body>
-    <header>
-        <div id="cssmenu">
-            <ul>
-               <li><a href="inicio.blade.php"><i class="fas fa-home elemento"></i>Inicio</a></li>
-	           <li style="float:right;" ><a href="logIn.php"><i class="fas fa-sign-out-alt elemento"></i>Cerrar Sesión</a></li>
-            </ul>    
-        </div>           
-    </header>
+ 
 
-		@if(count($errors) > 0)
-		<div class="alert alert-danger">
-		<ul>
-		@foreach($errors->all() as $error)
-			<li>{{$error}}</li>
-		@endforeach
-		</ul>
-		</div>
-		@endif
-		@if(\Session::has('success'))
-		<div class="alert alert-success">
-		<p>{{ \Session::get('success') }}</p>
-		</div>
-		@endif
-
-		<form method="get" action="{{action('usuarioControlador@store')}}">
+                <form method="POST" enctype="multipart/form-data" action="{{action('usuarioControlador@guardarImagen')}}">
    	{{csrf_field()}}
 		
 		<div class="container">
@@ -124,15 +78,32 @@
 				<input type="file" name="image" id="image" />  
 				<br>
 				<div class="form-group">
-    			<input type="submit" class="boton botonRojo" text="Registrar" />
+    			<input type="submit" class="boton botonRojo" name="insert" id="insert" text="Registrar" />
    			</div>
 			</section>
 		</div>
 		</form>
+ </html>  
 
-		<div class="footer">
-		  <img class="imgFooter" src="../../img/Logo-Blanco.png" align="left" class="img-responsive">
-		  <p>© ComunicaTEC. Todos los derechos reservados.</p>
-		</div>
-	</body>
-</html>
+ <script>  
+ $(document).ready(function(){  
+      $('#insert').click(function(){  
+           var image_name = $('#image').val();  
+           if(image_name == '')  
+           {  
+                alert("Please Select Image");  
+                return false;  
+           }  
+           else  
+           {  
+                var extension = $('#image').val().split('.').pop().toLowerCase();  
+                if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1)  
+                {  
+                     alert('Invalid Image File');  
+                     $('#image').val('');  
+                     return false;  
+                }  
+           }  
+      });  
+ });  
+ </script> 

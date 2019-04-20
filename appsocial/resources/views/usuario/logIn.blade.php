@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -17,15 +18,32 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
     </head>
-    <body>
+    <body onLoad=>
+  
 
-
+    @if(count($errors) > 0)
+		<div class="alert alert-danger">
+		<ul>
+		@foreach($errors->all() as $error)
+			<li>{{$error}}</li>
+		@endforeach
+		</ul>
+		</div>
+		@endif
+		@if(\Session::has('success'))
+		<div class="alert alert-success">
+		<p>{{ \Session::get('success') }}</p>
+		</div>
+		@endif
+        
+    <form method="get" action="{{url('usuario')}}">
+        {{csrf_field()}}
             <div class="container">
             <section class="content">
                 <img src='img/Logo.png' class="img-responsive" width="30%" height="30%">
                 <br>
                 <span class="input" id="inputLogin">
-                    <input id="inputFieldLogin" class="inputField" type="text" id="correo" placeholder="Correo" />
+                    <input id="inputFieldLogin" class="inputField" type="text" name="correo" class="form-group" placeholder="Correo" />
                     <label class="inputLabel inputLabelNaranja" for="email">
                         <i class="fa fa-fw fa-envelope icono iconoInput"></i>
                         <span class="inputLabelContenido"></span>
@@ -33,19 +51,19 @@
                 </span>
                 <br>
                 <span class="input" id="inputLogin">
-                    <input class="inputField" type="password" id="pass" placeholder="Contraseña" />
+                    <input class="inputField" type="password" name="password" class="form-group" placeholder="Contraseña" />
                     <label class="inputLabel inputLabelNaranja" for="contrasena">
                         <i class="fa fa-fw fa-lock icono iconoInput"></i>
                         <span class="inputLabelContenido"></span>
                     </label>
                 </span>
                 <br><br>
-                <button onclick="location.href='inicio.php';" class="boton botonRojo">Entrar</button>
+                <button  type="submit" class="boton botonRojo">Entrar</button>
                 <br><br>
-                <a href="ingresoUsuario.blade.php">¿No tienes una cuenta aún? Regístrate aquí</a>
+                <a href="registrar.blade.php">¿No tienes una cuenta aún? Regístrate aquí</a>
             </section>
-
         </div>
         </div>
+    </form>
     </body>
 </html>

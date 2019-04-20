@@ -1,3 +1,16 @@
+<?php 
+ $connect = mysqli_connect("localhost", "root", "", "redsocial");
+
+	session_start();
+	if($_SESSION["nombre"] == "")
+	{
+		header("Location: /logIn.blade.php");
+		die();
+	}
+
+	
+?>
+
 <!DOCTYPE html>
 <html lang="es-ES">
 	<head>
@@ -32,11 +45,29 @@
     <header>
         <div id="cssmenu">
             <ul>
-               <li><a href="inicio.php"><i class="fas fa-home elemento"></i>Inicio</a></li>
-	           <li style="float:right;" ><a href="logIn.php"><i class="fas fa-sign-out-alt elemento"></i>Cerrar Sesión</a></li>
+               <li><a href="inicio.blade.php"><i class="fas fa-home elemento"></i>Inicio</a></li>
+	           <li style="float:right;"><a href="logIn.blade.php"><i class="fas fa-sign-out-alt elemento"></i>Cerrar Sesión</a></li>
             </ul>    
         </div>           
     </header>
+
+
+		@if(count($errors) > 0)
+		<div class="alert alert-danger">
+		<ul>
+		@foreach($errors->all() as $error)
+			<li>{{$error}}</li>
+		@endforeach
+		</ul>
+		</div>
+		@endif
+		@if(\Session::has('success'))
+		<div class="alert alert-success">
+		<p>{{ \Session::get('success') }}</p>
+		</div>
+		@endif
+
+		
     <div class="container">
     	<br><br>
     	<p>Para buscar debe ingresar los tags antecedidos por # y separados por espacio en caso de ser varios:</p>
@@ -50,42 +81,66 @@
 							</span>
 						</section>
 		</div>
-	<div class="comments-container">
 
-		<ul id="comments-list" class="comments-list">
+	  <form method="get"  action="{{url('publicacion')}}">
+		{{csrf_field()}}
+        <button  type="submit" class="form-group">Cargar</button>
+    </form>
+
+	<form method="post" enctype="multipart/form-data" action="{{url('publicacion')}}">
+	<?php  /*
+                $query = "SELECT imagen FROM usuarios where id = 28 ";  
+                $result = mysqli_query($connect, $query);  
+                while($row = mysqli_fetch_array($result))  
+                {  
+                     echo '  
+                          <tr>  
+                               <td>  
+                                    <img src="data:image/jpeg;base64,'.base64_encode($row['imagen'] ).'" height="200" width="200" class="img-thumnail" />  
+                               </td>  
+                          </tr>  
+                     ';  
+                }  */
+                ?>  
+  	{{csrf_field()}}
+		<div class="comments-container">
+			<ul id="comments-list" class="comments-list">
 			<li>
-				<div class="comment-main-level">
-					<!-- Contenedor del Comentario -->
-					<div class="comment-box">
-						<div class="comment-head">
-							<h6 class="comment-name">Fabiola Montero</h6>
-							<i class="fa fa-lock-open" id="iconoPrivado" onclick="postPrivado()"></i>
-							<i class="fa fa-lock" id="iconoPublico" onclick="postPublico()"></i>
-						</div>
-						<div class="comment-content">
-							<div class="container">
-							<section class="content">
-							<span class="input">
-								<input class="inputField" type="text" id="tituloPost" placeholder="Título" />
+			<div class="comment-main-level">
+				<!-- Contenedor del Comentario -->
+				<div class="comment-box">
+					<div class="comment-head">
+						<h6 class="comment-name"> <?php echo $_SESSION["nombre"];?> </h6> 
+						<i class="fa fa-lock-open" id="iconoPrivado" onclick="postPrivado()"></i>
+						<i class="fa fa-lock" id="iconoPublico" onclick="postPublico()"></i>
+						<input type="hidden" class="inputField"  id="tipoPublicacion" name="tipo" class="form-group" placeholder="Tipo" />
+					</div>
+				<div class="comment-content">
+				<div class="container">
+						<section class="content">
+						<span class="input">
+								<input class="inputField" type="text" name="titulo" class="form-group"placeholder="Título" />
 								<label class="inputLabel inputLabelNaranja" for="tituloPost">
 									<i class="fa fa-fw fa-quote-left  icono iconoInput"></i>
 									<span class="inputLabelContenido"></span>
 								</label>
 							</span>
 							<span class="input">
-								<input class="inputField" type="text" id="descripcionPost" placeholder="Descripción" />
+								<input class="inputField" type="text" name="descripcion" class="form-group" placeholder="Descripción" />
 								<label class="inputLabel inputLabelNaranja" for="descripcionPost">
 									<i class="fa fa-fw fa-align-justify  icono iconoInput"></i>
 									<span class="inputLabelContenido"></span>
 								</label>
 							</span>
 							<span class="input">
-								<input class="inputField" type="text" id="tagsPost" placeholder="Tags" />
+								<input class="inputField" type="text" name="tags" class="form-group" placeholder="Tags" />
 								<label class="inputLabel inputLabelNaranja" for="tagsPost">
 									<i class="fa fa-fw fa-tags icono iconoInput"></i>
 									<span class="inputLabelContenido"></span>
 								</label>
 							</span>
+							<br>
+							<input type="file" name="image" id="image" />  
 							</section>
 							<button onclick="" class="boton botonRojo">Publicar</button>
 							</div>
@@ -95,6 +150,9 @@
 			</li>
 
 			<li>
+
+			<form method="post" action="{{url('like')}}">
+			{{csrf_field()}}
 				<div class="comment-main-level">
 					<div class="comment-box">
 						<div class="comment-head">
@@ -108,6 +166,35 @@
 						</div>
 					</div>
 				</div>
+			</form>
+			<?php
+						$connect = mysqli_connect("localhost", "root", "", "redsocial");  
+							$query = "call procedimientoCargarPublicaciones(1)"; 
+							$result = mysqli_query($connect, $query);  
+							while($row = mysqli_fetch_array($result))  
+									{  
+											echo '  
+											<form>
+													<div class="comment-main-level">
+															<div class="comment-box">
+																	<div class="comment-head">
+																			<h6 class="comment-name">'.$row['titulo'].'</h6>
+																			<i class="fa fa-comment-alt" onclick="mostrarModalComentario()"></i>
+																			<i id="iconoLike" class="fa fa-heart" onclick="darLike()"></i>
+																			<i id="iconoVerLikes" class="fa fa-eye" onclick="mostrarModalLikes()"></i>
+																	</div>
+																	<div class="comment-content">'.$row['descripcion'].'</div>
+																	<div class="comment-content">'.$row['tags'].'</div>
+																	<div align="center"> 
+																	<img src="data:image/jpeg;base64,'.base64_encode($row['imagen'] ).'" height="200" width="200" class="img-thumnail" />  
+																	</div>
+															</div>
+
+													</div>
+											</form>
+											';  
+									}  
+				?>
 				<!-- Respuestas de los comentarios -->
 				<ul class="comments-list reply-list">
 					<li>
@@ -136,6 +223,11 @@
 			</li>
 		</ul>
 	</div>
+	</form>
+
+
+	<form method="post"  enctype="multipart/form-data" action="{{url('comentario')}}">
+  {{csrf_field()}}
 	<div class="container">
 	<section class="content">
 	<!-- Modal -->
@@ -145,7 +237,7 @@
 		    <span class="close closeModalComentario">&times;</span>
 		    <h4>Comentario:</h4>
 		    <span class="input" >
-					<textarea  rows="3" cols="5" class="inputField" id="comentario" placeholder="Escribe aquí tu comentario..."></textarea>
+					<textarea  rows="3" cols="5" class="inputField" name="texto" class="form-group" placeholder="Escribe aquí tu comentario..."></textarea>
 					<label class="inputLabel inputLabelNaranja" for="contrasena" id="inputLabelDos">
 						<i class="fa fa-fw fa-align-justify icono iconoInput"></i>
 						<span class="inputLabelContenido"></span>
@@ -153,16 +245,19 @@
 			</span>
 			<br>
 			<span class="input">
-					<input class="inputField" type="text" id="tagsPost" placeholder="Tags" />
+					<input class="inputField" type="text" name="tags2" class="form-group" placeholder="Tags" />
 					<label class="inputLabel inputLabelNaranja" for="tagsPost">
 					<i class="fa fa-fw fa-tags icono iconoInput"></i>
 					<span class="inputLabelContenido"></span>
 					</label>
 			</span>
 			<br>
+			<input type="file" name="image" id="image" />  
+			<br>
 			<button onclick="" class="boton botonRojo">Agregar</button>
 		  </div>
 	</div>
+	</form>
 	<!-- Modal -->
 	<div id="modalLikes" class="modal">
 		  <!--Contenido modal -->

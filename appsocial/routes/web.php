@@ -20,10 +20,11 @@ Route::resource('usuario', 'usuarioControlador');
 Route::resource('publicacion', 'publicacionControlador');
 Route::resource('comentario', 'comentarioControlador');
 
-Route::get('usuario', 'usuarioControlador@store');
-Route::post('usuario', 'usuarioControlador@login');
+//Route::get('usuario', 'usuarioControlador@store');
+Route::get('usuario', 'usuarioControlador@login');
+Route::post('usuario', 'usuarioControlador@guardarImagen');
 
-Route::post('publicacion', 'publicacionControlador@cargarPublicaciones');
+Route::get('publicacion', 'publicacionControlador@cargarPublicaciones');
 
 
 
@@ -31,9 +32,15 @@ Route::get('logIn.blade.php', function () {
     return view('usuario.logIn');
 });
 
+Route::get('registrar.blade.php', function () {
+    return view('usuario.registrar');
+});
+
+
 Route::get('inicio.blade.php', function () {
     return view('usuario.inicio');
 });
+
 Route::get('ingresoUsuario.blade.php', function () {
     return view('usuario.ingresoUsuario');
 });
