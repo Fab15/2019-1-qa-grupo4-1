@@ -1,4 +1,9 @@
 
+<?php
+session_start();
+$_SESSION["nombre"] = "";
+$_SESSION["id"] = "";
+?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -35,7 +40,6 @@
 		<p>{{ \Session::get('success') }}</p>
 		</div>
 		@endif
-        
     <form method="get" action="{{url('usuario')}}">
         {{csrf_field()}}
             <div class="container">

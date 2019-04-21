@@ -19,6 +19,8 @@ Route::resource('student', 'StudentController');
 Route::resource('usuario', 'usuarioControlador');
 Route::resource('publicacion', 'publicacionControlador');
 Route::resource('comentario', 'comentarioControlador');
+Route::resource('respuesta', 'respuestaControlador');
+
 
 //Route::get('usuario', 'usuarioControlador@store');
 Route::get('usuario', 'usuarioControlador@login');

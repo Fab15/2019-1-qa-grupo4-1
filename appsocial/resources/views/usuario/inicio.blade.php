@@ -77,31 +77,13 @@
 								<label class="inputLabel inputLabelNaranja" for="tituloPost">
 									<i class="fa fa-fw fa-search  icono iconoInput"></i>
 									<span class="inputLabelContenido"></span>
+								
 								</label>
 							</span>
 						</section>
+						
 		</div>
-
-	  <form method="get"  action="{{url('publicacion')}}">
-		{{csrf_field()}}
-        <button  type="submit" class="form-group">Cargar</button>
-    </form>
-
 	<form method="post" enctype="multipart/form-data" action="{{url('publicacion')}}">
-	<?php  /*
-                $query = "SELECT imagen FROM usuarios where id = 28 ";  
-                $result = mysqli_query($connect, $query);  
-                while($row = mysqli_fetch_array($result))  
-                {  
-                     echo '  
-                          <tr>  
-                               <td>  
-                                    <img src="data:image/jpeg;base64,'.base64_encode($row['imagen'] ).'" height="200" width="200" class="img-thumnail" />  
-                               </td>  
-                          </tr>  
-                     ';  
-                }  */
-                ?>  
   	{{csrf_field()}}
 		<div class="comments-container">
 			<ul id="comments-list" class="comments-list">
@@ -113,6 +95,7 @@
 						<h6 class="comment-name"> <?php echo $_SESSION["nombre"];?> </h6> 
 						<i class="fa fa-lock-open" id="iconoPrivado" onclick="postPrivado()"></i>
 						<i class="fa fa-lock" id="iconoPublico" onclick="postPublico()"></i>
+						<input type="hidden" class="inputField"  id="idPublicacion2" name="idPublicacion2" class="form-group" placeholder="idPublicacion" />
 						<input type="hidden" class="inputField"  id="tipoPublicacion" name="tipo" class="form-group" placeholder="Tipo" />
 					</div>
 				<div class="comment-content">
@@ -168,33 +151,110 @@
 				</div>
 			</form>
 			<?php
-						$connect = mysqli_connect("localhost", "root", "", "redsocial");  
-							$query = "call procedimientoCargarPublicaciones(1)"; 
-							$result = mysqli_query($connect, $query);  
-							while($row = mysqli_fetch_array($result))  
-									{  
-											echo '  
-											<form>
-													<div class="comment-main-level">
-															<div class="comment-box">
-																	<div class="comment-head">
-																			<h6 class="comment-name">'.$row['titulo'].'</h6>
-																			<i class="fa fa-comment-alt" onclick="mostrarModalComentario()"></i>
-																			<i id="iconoLike" class="fa fa-heart" onclick="darLike()"></i>
-																			<i id="iconoVerLikes" class="fa fa-eye" onclick="mostrarModalLikes()"></i>
-																	</div>
-																	<div class="comment-content">'.$row['descripcion'].'</div>
-																	<div class="comment-content">'.$row['tags'].'</div>
-																	<div align="center"> 
-																	<img src="data:image/jpeg;base64,'.base64_encode($row['imagen'] ).'" height="200" width="200" class="img-thumnail" />  
-																	</div>
-															</div>
-
+							$idUsuario = $_SESSION["id"];
+						  $connect = mysqli_connect("localhost", "root", "", "redsocial");  
+							$query = "call procedimientoCargarPublicaciones('$idUsuario')"; 
+							$result = mysqli_query($connect, $query);
+							if (!$result) {
+								echo 'sin publicaciones';
+							}
+							else
+							{
+								while($row = mysqli_fetch_array($result))  
+								{  
+										echo '
+										<form>
+												<div class="comment-main-level">
+														<div class="comment-box">
+																<div class="comment-head">
+																		<h6 class="comment-name">'.$row['titulo'].'</h6>
+																		<i class="fa fa-comment-alt" onclick="mostrarModalComentario('.$row['id'].')"></i>
+																		<i id="iconoLike'.$row['id'].'" class="fa fa-heart" onclick="darLike('.$row['id'].')"></i>
+																		<i id="iconoVerLikes" class="fa fa-eye" onclick="mostrarModalLikes()"></i>
+																</div>
+																<div class="comment-content">'.$row['descripcion'].'</div>
+																<div class="comment-content">'.$row['tags'].'</div>
+																<div align="center"> 
+																<img src="data:image/jpeg;base64,'.base64_encode($row['imagen']).'" height="200" width="200" class="img-thumnail" />  
+																</div>
+														</div>
+												</div>
+										</form>';
+										$idCargar = $row['id'];
+										$connect = mysqli_connect("localhost", "root", "", "redsocial");  
+										$query2 = "SELECT usuarios.nombre as usuario, comentarios.id as idComentario, comentarios.texto as texto, 
+										comentarios.tags as tags, comentarios.imagen as imagen FROM comentarios inner join usuarios on 
+										comentarios.idUsuario = usuarios.id WHERE comentarios.idPublicacion = '$idCargar'"; 
+										$result2 = mysqli_query($connect, $query2);
+										if (!$result2) {
+											echo 'sin publicaciones';
+										}
+										else
+										{
+											while($row2 = mysqli_fetch_array($result2))  
+											{
+												echo '
+												<ul class="comments-list reply-list">
+												<li>
+													<!-- Contenedor del Comentario -->
+													<div class="comment-box">
+														<div class="comment-head">
+															<h6 class="comment-name">'.$row2['usuario'].'</h6>
+															<i class="fa fa-comment-alt" onclick="mostrarModalComentario2('.$row2['idComentario'].')"></i>
+														</div>
+														<div class="comment-content">'.$row2['texto'].'</div>
+														<div class="comment-content">'.$row2['tags'].'</div>
+														<div align="center"> 
+																<img src="data:image/jpeg;base64,'.base64_encode($row2['imagen']).'" height="200" width="200" class="img-thumnail" />  
+																</div>
 													</div>
-											</form>
-											';  
-									}  
+												</li>
+									</ul>
+												';
+
+												$idCargar2 = $row2['idComentario'];
+												$connect = mysqli_connect("localhost", "root", "", "redsocial");  
+												$query3 = "SELECT usuarios.nombre as usuario, respuestas.id as idRespuesta, respuestas.texto as texto, 
+												respuestas.tags as tags, respuestas.imagen as imagen FROM respuestas inner join usuarios on 
+												respuestas.idUsuario = usuarios.id WHERE respuestas.idComentario = '$idCargar2'"; 
+												$result3 = mysqli_query($connect, $query3);
+												if (!$result3) {
+													echo 'sin publicaciones';
+												}
+												else
+												{
+													while($row3 = mysqli_fetch_array($result3))  
+													{
+														echo '
+														<ul class="comments-list reply-list" align="center">
+														<li>
+															<!-- Contenedor del Comentario -->
+															<div class="comment-box">
+																<div class="comment-head">
+																	<h6 class="comment-name">'.$row3['usuario'].'</h6>
+																</div>
+																<div class="comment-content">'.$row3['texto'].'</div>
+																<div class="comment-content">'.$row3['tags'].'</div>
+																<div align="center"> 
+																		<img src="data:image/jpeg;base64,'.base64_encode($row3['imagen']).'" height="100" width="100" class="img-thumnail" />  
+																		</div>
+															</div>
+														</li>
+											</ul>
+														';
+											}
+										}
+
+										}
+									}
+							}
+							}
 				?>
+
+				<?php
+						  											
+					?>
+
 				<!-- Respuestas de los comentarios -->
 				<ul class="comments-list reply-list">
 					<li>
@@ -237,6 +297,7 @@
 		    <span class="close closeModalComentario">&times;</span>
 		    <h4>Comentario:</h4>
 		    <span class="input" >
+				<input type="hidden" class="inputField"  id="idPublicacion" name="idPublicacion" class="form-group" placeholder="idPublicacion" />
 					<textarea  rows="3" cols="5" class="inputField" name="texto" class="form-group" placeholder="Escribe aquí tu comentario..."></textarea>
 					<label class="inputLabel inputLabelNaranja" for="contrasena" id="inputLabelDos">
 						<i class="fa fa-fw fa-align-justify icono iconoInput"></i>
@@ -257,7 +318,42 @@
 			<button onclick="" class="boton botonRojo">Agregar</button>
 		  </div>
 	</div>
+</form>
+
+<form method="post"  enctype="multipart/form-data" action="{{url('respuesta')}}">
+  {{csrf_field()}}
+	<div class="container">
+	<section class="content">
+	<div id="modalComentario2" class="modal">
+		  <!--Contenido modal -->
+		  <div class="modal-content">
+		    <span class="close closeModalComentario2">&times;</span>
+		    <h4>Respuesta:</h4>
+		    <span class="input" >
+				<input  class="inputField"  id="idComentario" name="idComentario" class="form-group" placeholder="idComentario" />
+					<textarea  rows="3" cols="5" class="inputField" name="texto2" class="form-group" placeholder="Escribe aquí tu comentario..."></textarea>
+					<label class="inputLabel inputLabelNaranja" for="contrasena" id="inputLabelDos">
+						<i class="fa fa-fw fa-align-justify icono iconoInput"></i>
+						<span class="inputLabelContenido"></span>
+					</label>
+			</span>
+			<br>
+			<span class="input">
+					<input class="inputField" type="text" name="tags3" class="form-group" placeholder="Tags" />
+					<label class="inputLabel inputLabelNaranja" for="tagsPost">
+					<i class="fa fa-fw fa-tags icono iconoInput"></i>
+					<span class="inputLabelContenido"></span>
+					</label>
+			</span>
+			<br>
+			<input type="file" name="image" id="image" />  
+			<br>
+			<button onclick="" class="boton botonRojo">Agregar</button>
+		  </div>
+	</div>
 	</form>
+
+
 	<!-- Modal -->
 	<div id="modalLikes" class="modal">
 		  <!--Contenido modal -->
