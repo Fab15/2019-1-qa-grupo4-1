@@ -62,7 +62,7 @@ $_SESSION["id"] = "";
                     </label>
                 </span>
                 <br><br>
-                <button  type="submit" class="boton botonRojo">Entrar</button>
+                <button  id="Login" type="submit" class="boton botonRojo">Entrar</button>
                 <br><br>
                 <a href="registrar.blade.php">¿No tienes una cuenta aún? Regístrate aquí</a>
             </section>
